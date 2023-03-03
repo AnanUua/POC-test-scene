@@ -102,10 +102,16 @@ const HotMaterial = shaderMaterial(
     uniform float time;
     void main() {
       vec3 pos = position;
-      float noiseFreq = 3.5;
-      float noiseAmp = 0.05; 
-      vec3 noisePos = vec3(pos.x, pos.y, pos.z * noiseFreq + time);
-      pos.z += snoise(noisePos) * noiseAmp;
+      float wave = time+vUv.x *(10.+10.);
+      float c = 0.5+0.9*sin(wave);
+      float w = .05;
+      float y = uv.y*(5.+10.);
+      float prevPos = fract(y)-1.;
+      float thisPos = fract(y);
+      float nextPos = fract(y)+1.;
+      pos.x = prevPos;
+      pos.y = thisPos;
+      pos.z = nextPos;
       vWave = pos.z;
       gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.);
     }
